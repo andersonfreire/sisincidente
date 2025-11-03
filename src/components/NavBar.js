@@ -17,6 +17,9 @@ const Navbar = () => {
                 <BNav.Toggle aria-controls="basic-navbar-nav" />
                 <BNav.Collapse id="basic-navbar-nav">
                     <Nav className="flex-column w-100">
+                        <Nav.Link as={Link} to="/unidades" className="text-light">
+                        Unidades Administrativas
+                        </Nav.Link>
                         <Nav.Link as={Link} to="/dashboard" className="text-light">
                         Dashboard
                         </Nav.Link>

@@ -9,6 +9,7 @@ import Navbar from "./components/NavBar";
 import "./App.css"; // adicionaremos o CSS aqui
 import Header from "./components/Header/Header";
 import Categoria from "./pages/Categoria/Categoria";
+import UnidadeAdministrativa from "./pages/UnidadeAdministrativa/UnidadeAdministrativa";
 
 const PrivateRoute = ({ children }) => {
   const { user } = useAuth();
@@ -43,6 +44,7 @@ function App() {
                 <Route path="/incidents/:id" element={<IncidentForm />} />
                 <Route path="/new" element={<IncidentForm />} />
                 <Route path="/categorias" element={<Categoria />} />
+                <Route path="/unidades" element={<UnidadeAdministrativa />} />
               </Routes>
             </div>
           </div>
