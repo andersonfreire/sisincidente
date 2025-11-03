@@ -42,7 +42,7 @@ Antes de executar o projeto, você precisa ter instalado:
 1. **Clone este repositório**
 
 ```bash
-git clone https://github.com/joanmdrs/sisincidentes.git
+git clone https://github.com/joanmdrs/sisincidente.git
 cd sisincidentes
 ```
 
