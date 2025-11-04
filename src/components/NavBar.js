@@ -20,6 +20,9 @@ const Navbar = () => {
                         <Nav.Link as={Link} to="/unidades" className="text-light">
                         Unidades Administrativas
                         </Nav.Link>
+                        <Nav.Link as={Link} to="/usuarios" className="text-light">
+                        Usuários
+                        </Nav.Link>
                         <Nav.Link as={Link} to="/dashboard" className="text-light">
                         Dashboard
                         </Nav.Link>

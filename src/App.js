@@ -10,6 +10,7 @@ import "./App.css"; // adicionaremos o CSS aqui
 import Header from "./components/Header/Header";
 import Categoria from "./pages/Categoria/Categoria";
 import UnidadeAdministrativa from "./pages/UnidadeAdministrativa/UnidadeAdministrativa";
+import Usuario from "./pages/Usuario/Usuario";
 
 const PrivateRoute = ({ children }) => {
   const { user } = useAuth();
@@ -45,6 +46,7 @@ function App() {
                 <Route path="/new" element={<IncidentForm />} />
                 <Route path="/categorias" element={<Categoria />} />
                 <Route path="/unidades" element={<UnidadeAdministrativa />} />
+                <Route path="/usuarios" element={<Usuario />} />
               </Routes>
             </div>
           </div>
