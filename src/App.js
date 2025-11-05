@@ -5,12 +5,14 @@ import IncidentList from "./components/IncidentList";
 import IncidentForm from "./components/IncidentForm";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Navbar from "./components/NavBar";
-import "./App.css"; // adicionaremos o CSS aqui
-import Header from "./components/Header/Header";
+import "./App.css";
+
 import Categoria from "./pages/Categoria/Categoria";
 import UnidadeAdministrativa from "./pages/UnidadeAdministrativa/UnidadeAdministrativa";
 import Usuario from "./pages/Usuario/Usuario";
+import Home from "./pages/Home/Home";
+import MainLayout from "./components/MainLayout/MainLayout";
+import Login from "./pages/Login/Login";
 
 const PrivateRoute = ({ children }) => {
   const { user } = useAuth();
@@ -21,36 +23,55 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="app-layout d-flex">
-          {/* Sidebar */}
-          <Navbar />
+        <Routes>
+          
+          <Route 
+            path="/home"
+            element={
+              <Home />
+            }
+          />
+          <Route 
+            path="/"
+            element={
+              <MainLayout />
+            }
+          />
 
-          {/* Área principal */}
-          <div className="main-content flex-grow-1">
-            <Header />
+          <Route
+            path="/login"
+            element={
+              <Login />
+            }
+          />
+          <Route
+            path="/categorias"
+            element={
+              <MainLayout>
+                <Categoria />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/unidades"
+            element={
+              <MainLayout>
+                <UnidadeAdministrativa />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/usuarios"
+            element={
+              <MainLayout>
+                <Usuario />
+              </MainLayout>
+            }
+          />
 
-            <div className="content">
-              <Routes>
-                {/* <Route path="/login" element={<Login />} />
-                <Route path="/" element={<Navigate to="/dashboard" />} />
-                <Route
-                  path="/dashboard"
-                  element={
-                    <PrivateRoute>
-                      <Dashboard />
-                    </PrivateRoute>
-                  }
-                /> */}
-                <Route path="/incidents" element={<IncidentList />} />
-                <Route path="/incidents/:id" element={<IncidentForm />} />
-                <Route path="/new" element={<IncidentForm />} />
-                <Route path="/categorias" element={<Categoria />} />
-                <Route path="/unidades" element={<UnidadeAdministrativa />} />
-                <Route path="/usuarios" element={<Usuario />} />
-              </Routes>
-            </div>
-          </div>
-        </div>
+          {/* 🔹 Rota de fallback (qualquer URL desconhecida redireciona para Home) */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
       </Router>
     </AuthProvider>
   );
