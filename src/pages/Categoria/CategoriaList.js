@@ -46,7 +46,7 @@ const CategoriaList = ({ onEdit }) => {
                     {categories.length > 0 ? (
                         categories.map((cat) => (
                             <tr key={cat.id}>
-                                <td>{cat.name}</td>
+                                <td>{cat.nome}</td>
                                 <td>{cat.descricao || "-"}</td>
                                 <td>{cat.tipo}</td>
                                 <td>

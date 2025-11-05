@@ -4,3 +4,5 @@ export const initialCategoriaModel = {
   tipo: 'Incidente',
 };
 
+
+

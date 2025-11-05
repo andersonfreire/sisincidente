@@ -61,14 +61,15 @@ const CategoriaForm = ({ selectedCategory, setSelectedCategory, onSave }) => {
     return (
         <div className="mb-4">
             <h4>{selectedCategory ? "Editar Categoria" : "Nova Categoria"}</h4>
+        
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                     <Form.Label>Nome</Form.Label>
                     <Form.Control
                         type="text"
-                        name="name"
+                        name="nome"
                         placeholder="Digite o nome da categoria"
-                        value={categoriaData.name}
+                        value={categoriaData.nome}
                         onChange={handleChange}
                         required
                     />

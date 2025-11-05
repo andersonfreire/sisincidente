@@ -8,7 +8,7 @@ export const createCategory = async (data) => {
     try {
         const colRef = collection(db, "categories");
         const payload = {
-            name: data.name || "",
+            nome: data.nome || "",
             descricao: data.descricao || "",
             tipo: data.tipo || "Incidente", // valor padrão
             createdAt: serverTimestamp(),
