@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebaseConfig";
+// import { signInWithEmailAndPassword } from "firebase/auth";
+// import { auth } from "../firebaseConfig";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,25 +15,18 @@ const Login = () => {
     setErro("");
 
     try {
-      await signInWithEmailAndPassword(auth, email, senha);
-      navigate("/");
-    } catch (error) {
-      switch (error.code) {
-        case "auth/invalid-email":
-          setErro("O formato do e-mail é inválido.");
-          break;
-        case "auth/user-disabled":
-          setErro("Este usuário foi desabilitado.");
-          break;
-        case "auth/user-not-found":
-        case "auth/wrong-password":
-        case "auth/invalid-credential":
-          setErro("Email ou senha inválidos. Tente novamente.");
-          break;
-        default:
-          setErro("Erro ao efetuar login. Verifique suas credenciais.");
-          break;
+      // Caso use o Firebase Auth:
+      // await signInWithEmailAndPassword(auth, email, senha);
+      // navigate("/incidentes");
+
+      // Simulação (remoção ao integrar Firebase)
+      if (email === "admin@sis.com" && senha === "123456") {
+        navigate("/incidentes");
+      } else {
+        setErro("Credenciais inválidas. Tente novamente.");
       }
+    } catch (error) {
+      setErro("Erro ao efetuar login. Verifique suas credenciais.");
     }
   };
 
