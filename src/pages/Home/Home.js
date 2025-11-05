@@ -71,7 +71,7 @@ const Home = () => {
                   <li>🧭 <strong>React Router DOM</strong> — controle de rotas e navegação.</li>
                   <li>🎨 <strong>Bootstrap 5</strong> — estilização moderna e responsiva.</li>
                   <li>🔥 <strong>Firebase Firestore</strong> — armazenamento de dados em nuvem.</li>
-                  <li>🔐 <strong>Firebase Auth</strong> — autenticação de usuários (opcional).</li>
+                  <li>🔐 <strong>Firebase Auth</strong> — autenticação de usuários.</li>
                 </ul>
               </div>
             </div>

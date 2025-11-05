@@ -83,7 +83,7 @@ function App() {
                 </MainLayout>
             }
           />
-          <Route
+          <Route 
             path="/incidentes"
             element={
               <PrivateRoute>

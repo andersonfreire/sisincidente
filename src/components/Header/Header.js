@@ -44,7 +44,7 @@ const Header = () => {
               <span>{user.email}</span>
             </Dropdown.Toggle>
 
-            <Dropdown.Menu className="shadow-sm">
+              <Dropdown.Menu className="shadow-sm">
               <Dropdown.Item href="#/perfil">
                 <FaUserCircle className="me-2 text-primary" /> Perfil
               </Dropdown.Item>
@@ -54,7 +54,7 @@ const Header = () => {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-        )}
+        )} 
       </div>
     </header>
   );
