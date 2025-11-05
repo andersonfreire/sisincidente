@@ -32,6 +32,9 @@ const Navbar = () => {
                         <Nav.Link as={Link} to="/incidentes" className="text-light">
                         Incidentes e Vulnerabilidades
                         </Nav.Link>
+                        <Nav.Link as={Link} to="/licoes" className="text-light">
+                            Lições
+                        </Nav.Link>
                         <Nav.Link as={Link} to="/estatisticas" className="text-light">
                         Estatísticas da ANPD
                         </Nav.Link>
