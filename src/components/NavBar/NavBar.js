@@ -30,9 +30,11 @@ const Navbar = () => {
                         Categorias
                         </Nav.Link>
                         <Nav.Link as={Link} to="/incidentes" className="text-light">
-                        Incidentes
+                        Incidentes e Vulnerabilidades
                         </Nav.Link>
-                        
+                        <Nav.Link as={Link} to="/estatisticas" className="text-light">
+                        Estatísticas da ANPD
+                        </Nav.Link>
                     </Nav>
                 </BNav.Collapse>
             </Container>

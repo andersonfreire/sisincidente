@@ -11,6 +11,7 @@ import Home from "./pages/Home/Home";
 import MainLayout from "./components/MainLayout/MainLayout";
 import Login from "./pages/Login/Login";
 import Incidente from "./pages/Incidente/Indicente";
+import Estatisticas from "./pages/Estatisticas/Estatisticas";
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -73,6 +74,14 @@ function App() {
                   <UnidadeAdministrativa />
                 </MainLayout>
               </PrivateRoute>
+            }
+          />
+          <Route 
+            path="/estatisticas"
+            element={
+                <MainLayout>
+                    <Estatisticas />
+                </MainLayout>
             }
           />
           <Route
