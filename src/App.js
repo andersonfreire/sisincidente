@@ -1,4 +1,3 @@
-// src/App.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -14,8 +13,23 @@ import Login from "./pages/Login/Login";
 import Incidente from "./pages/Incidente/Indicente";
 
 const PrivateRoute = ({ children }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+
   return user ? children : <Navigate to="/login" />;
+};
+
+const PublicRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+
+  return !user ? children : <Navigate to="/" />;
 };
 
 function App() {
@@ -23,61 +37,66 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          
-          <Route 
-            path="/home"
+          <Route
+            path="/login"
             element={
-              <Home />
-            }
-          />
-          <Route 
-            path="/"
-            element={
-              <MainLayout />
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
             }
           />
 
           <Route
-            path="/login"
+            path="/"
             element={
-              <Login />
+              <PrivateRoute>
+                <MainLayout>
+                  <Home />
+                </MainLayout>
+              </PrivateRoute>
             }
           />
           <Route
             path="/categorias"
             element={
-              <MainLayout>
-                <Categoria />
-              </MainLayout>
+              <PrivateRoute>
+                <MainLayout>
+                  <Categoria />
+                </MainLayout>
+              </PrivateRoute>
             }
           />
           <Route
             path="/unidades"
             element={
-              <MainLayout>
-                <UnidadeAdministrativa />
-              </MainLayout>
+              <PrivateRoute>
+                <MainLayout>
+                  <UnidadeAdministrativa />
+                </MainLayout>
+              </PrivateRoute>
             }
           />
           <Route
             path="/usuarios"
             element={
-              <MainLayout>
-                <Usuario />
-              </MainLayout>
+              <PrivateRoute>
+                <MainLayout>
+                  <Usuario />
+                </MainLayout>
+              </PrivateRoute>
             }
           />
-
-          <Route 
+          <Route
             path="/incidentes"
             element={
+              <PrivateRoute>
                 <MainLayout>
-                    <Incidente />
+                  <Incidente />
                 </MainLayout>
+              </PrivateRoute>
             }
           />
 
-          {/* 🔹 Rota de fallback (qualquer URL desconhecida redireciona para Home) */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
