@@ -29,12 +29,10 @@ const Navbar = () => {
                         <Nav.Link as={Link} to="/categorias" className="text-light">
                         Categorias
                         </Nav.Link>
-                        <Nav.Link as={Link} to="/incidents" className="text-light">
+                        <Nav.Link as={Link} to="/incidentes" className="text-light">
                         Incidentes
                         </Nav.Link>
-                        <Nav.Link as={Link} to="/new" className="text-light">
-                        Reportar
-                        </Nav.Link>
+                        
                     </Nav>
                 </BNav.Collapse>
             </Container>

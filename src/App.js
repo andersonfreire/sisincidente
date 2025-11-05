@@ -1,8 +1,6 @@
 // src/App.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import IncidentList from "./components/IncidentList";
-import IncidentForm from "./components/IncidentForm";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -13,6 +11,7 @@ import Usuario from "./pages/Usuario/Usuario";
 import Home from "./pages/Home/Home";
 import MainLayout from "./components/MainLayout/MainLayout";
 import Login from "./pages/Login/Login";
+import Incidente from "./pages/Incidente/Indicente";
 
 const PrivateRoute = ({ children }) => {
   const { user } = useAuth();
@@ -66,6 +65,15 @@ function App() {
               <MainLayout>
                 <Usuario />
               </MainLayout>
+            }
+          />
+
+          <Route 
+            path="/incidentes"
+            element={
+                <MainLayout>
+                    <Incidente />
+                </MainLayout>
             }
           />
 
