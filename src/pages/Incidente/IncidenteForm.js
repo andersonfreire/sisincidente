@@ -1,25 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Row, Col } from "react-bootstrap";
-import { initialIncidenteVulnerabilidade } from "../../models/incidenteVulnerabilidadeModel"
+import { initialIncidenteVulnerabilidade } from "../../models/incidenteVulnerabilidadeModel";
 import { getCategories } from "../../services/categoryService";
 import { createIncidente, updateIncidente } from "../../services/incidentService";
+import { getUsuarios } from "../../services/usuarioService";
+import { getUnidades } from "../../services/unidadeAdministrativaService";
 
 const IncidenteForm = ({ selectedIncidente, setSelectedIncidente, onSave }) => {
     const [formData, setFormData] = useState(initialIncidenteVulnerabilidade);
     const [loading, setLoading] = useState(false);
     const [categorias, setCategorias] = useState([]);
+    const [usuarios, setUsuarios] = useState([]);
+    const [unidades, setUnidades] = useState([]);
 
-    // Buscar categorias do Firestore
     useEffect(() => {
-        const fetchCategorias = async () => {
+        const fetchData = async () => {
             try {
-                const data = await getCategories();
-                setCategorias(data);
+                const [cats, users, units] = await Promise.all([
+                    getCategories(),
+                    getUsuarios(),
+                    getUnidades()
+                ]);
+                setCategorias(cats);
+                setUsuarios(users);
+                setUnidades(units);
             } catch (error) {
-                console.error("Erro ao carregar categorias:", error);
+                console.error("Erro ao carregar listas:", error);
             }
         };
-        fetchCategorias();
+        fetchData();
     }, []);
 
     useEffect(() => {
@@ -65,8 +74,25 @@ const IncidenteForm = ({ selectedIncidente, setSelectedIncidente, onSave }) => {
         <div className="mb-4">
             <h4>{selectedIncidente ? "Editar Incidente" : "Novo Incidente"}</h4>
             <Form onSubmit={handleSubmit}>
+                {/* === Identificação básica === */}
+
                 <Row>
-                    <Col md={6}>
+                    <Col md={12}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Assunto</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="assunto"
+                                value={formData.assunto}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>   
+                    </Col>
+                </Row>
+                
+                <Row>
+                    <Col md={4}>
                         <Form.Group className="mb-3">
                             <Form.Label>Número do Chamado</Form.Label>
                             <Form.Control
@@ -78,7 +104,7 @@ const IncidenteForm = ({ selectedIncidente, setSelectedIncidente, onSave }) => {
                         </Form.Group>
                     </Col>
 
-                    <Col md={6}>
+                    <Col md={4}>
                         <Form.Group className="mb-3">
                             <Form.Label>Tarefa Relacionada</Form.Label>
                             <Form.Control
@@ -89,23 +115,62 @@ const IncidenteForm = ({ selectedIncidente, setSelectedIncidente, onSave }) => {
                             />
                         </Form.Group>
                     </Col>
-                </Row>
 
-                <Row>
-                    <Col md={8}>
+                    <Col md={4}>
                         <Form.Group className="mb-3">
-                            <Form.Label>Assunto</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="assunto"
-                                value={formData.assunto}
+                            <Form.Label>Tipo</Form.Label>
+                            <Form.Select
+                                name="tipo"
+                                value={formData.tipo}
                                 onChange={handleChange}
                                 required
-                            />
+                            >
+                                <option value="">Selecione...</option>
+                                <option value="Incidente">Incidente</option>
+                                <option value="Vulnerabilidade">Vulnerabilidade</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+                </Row>
+
+                {/* === Assunto, Categoria e Unidade === */}
+                <Row>
+                    <Col md={3}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Situação</Form.Label>
+                            <Form.Select
+                                name="situacao"
+                                value={formData.situacao}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="Aberta">Aberta</option>
+                                <option value="Em Andamento">Em Andamento</option>
+                                <option value="Concluída">Concluída</option>
+                                <option value="Cancelada">Cancelada</option>
+                            </Form.Select>
                         </Form.Group>
                     </Col>
 
-                    <Col md={4}>
+                    <Col md={3}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Prioridade</Form.Label>
+                            <Form.Select
+                                name="prioridade"
+                                value={formData.prioridade}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="">Selecione...</option>
+                                <option value="Baixa">Baixa</option>
+                                <option value="Média">Média</option>
+                                <option value="Alta">Alta</option>
+                                <option value="Crítica">Crítica</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+
+                    <Col md={3}>
                         <Form.Group className="mb-3">
                             <Form.Label>Categoria</Form.Label>
                             <Form.Select
@@ -123,71 +188,159 @@ const IncidenteForm = ({ selectedIncidente, setSelectedIncidente, onSave }) => {
                             </Form.Select>
                         </Form.Group>
                     </Col>
+
+                    <Col md={3}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Unidade Administrativa</Form.Label>
+                            <Form.Select
+                                name="unidadeId"
+                                value={formData.unidadeId}
+                                onChange={handleChange}
+                            >
+                                <option value="">Selecione...</option>
+                                {unidades.map((u) => (
+                                    <option key={u.id} value={u.id}>
+                                        {u.sigla}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+                </Row>
+
+                {/* === Responsáveis === */}
+                <Row>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Autor</Form.Label>
+                            <Form.Select
+                                name="autorId"
+                                value={formData.autorId}
+                                onChange={handleChange}
+                            >
+                                <option value="">Selecione...</option>
+                                {usuarios.map((u) => (
+                                    <option key={u.id} value={u.id}>
+                                        {u.nome}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Atribuído para</Form.Label>
+                            <Form.Select
+                                name="atribuidoId"
+                                value={formData.atribuidoId}
+                                onChange={handleChange}
+                            >
+                                <option value="">Selecione...</option>
+                                {usuarios.map((u) => (
+                                    <option key={u.id} value={u.id}>
+                                        {u.nome}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+                </Row>
+
+                {/* === Detalhes técnicos === */}
+                <Row>
+                    <Col md={4}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>IP de Origem</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="ipOrigem"
+                                value={formData.ipOrigem}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>IP de Destino</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="ipDestino"
+                                value={formData.ipDestino}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Nome do Host</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="host"
+                                value={formData.host}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                    </Col>
+                </Row>                
+
+                <Row>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Tempo estimado para resolução</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="tempoEstimado"
+                                value={formData.tempoEstimado}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                    </Col>
+
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>CC (emails notificados)</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="cc"
+                                value={formData.cc}
+                                onChange={handleChange}
+                                placeholder="ex: usuario1@ufrn.br, usuario2@ufrn.br"
+                            />
+                        </Form.Group>
+                    </Col>
                 </Row>
 
                 <Form.Group className="mb-3">
                     <Form.Label>Descrição</Form.Label>
                     <Form.Control
                         as="textarea"
-                        rows={4}
+                        rows={3}
                         name="descricao"
                         value={formData.descricao}
                         onChange={handleChange}
                     />
                 </Form.Group>
 
-                <Row>
-                    <Col md={4}>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Situação</Form.Label>
-                            <Form.Select
-                                name="situacao"
-                                value={formData.situacao}
-                                onChange={handleChange}
-                            >
-                                <option>Aberta</option>
-                                <option>Em Andamento</option>
-                                <option>Concluída</option>
-                                <option>Cancelada</option>
-                            </Form.Select>
-                        </Form.Group>
-                    </Col>
+                <Form.Group className="mb-3">
+                    <Form.Label>Notas</Form.Label>
+                    <Form.Control
+                        as="textarea"
+                        rows={3}
+                        name="notas"
+                        value={formData.notas}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
 
-                    <Col md={4}>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Prioridade</Form.Label>
-                            <Form.Select
-                                name="prioridade"
-                                value={formData.prioridade}
-                                onChange={handleChange}
-                            >
-                                <option>Baixa</option>
-                                <option>Média</option>
-                                <option>Alta</option>
-                                <option>Crítica</option>
-                            </Form.Select>
-                        </Form.Group>
-                    </Col>
-
-                    <Col md={4}>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Natureza</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="natureza"
-                                value={formData.natureza}
-                                onChange={handleChange}
-                            />
-                        </Form.Group>
-                    </Col>
-                </Row>
-
-                <Button type="submit" variant="primary" disabled={loading}>
-                    {selectedIncidente ? "Atualizar" : "Adicionar"}
-                </Button>
-                <Button variant="danger" className="m-2" onClick={handleCancel}>
-                    Cancelar
-                </Button>
+                <div className="mt-3">
+                    <Button type="submit" variant="primary" disabled={loading}>
+                        {selectedIncidente ? "Atualizar" : "Adicionar"}
+                    </Button>
+                    <Button variant="secondary" className="ms-2" onClick={handleCancel}>
+                        Cancelar
+                    </Button>
+                </div>
             </Form>
         </div>
     );

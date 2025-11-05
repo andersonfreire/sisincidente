@@ -5,104 +5,102 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState("");
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const [erro, setErro] = useState("");
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setErro("");
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setErro("");
 
-    try {
-      await signInWithEmailAndPassword(auth, email, senha);
-      navigate("/");
-    } catch (error) {
-      switch (error.code) {
-        case "auth/invalid-email":
-          setErro("O formato do e-mail é inválido.");
-          break;
-        case "auth/user-disabled":
-          setErro("Este usuário foi desabilitado.");
-          break;
-        case "auth/user-not-found":
-        case "auth/wrong-password":
-        case "auth/invalid-credential":
-          setErro("Email ou senha inválidos. Tente novamente.");
-          break;
-        default:
-          setErro("Erro ao efetuar login. Verifique suas credenciais.");
-          break;
-      }
-    }
-  };
+        try {
+            await signInWithEmailAndPassword(auth, email, senha);
+            navigate("/");
+        } catch (error) {
+            switch (error.code) {
+                case "auth/invalid-email":
+                    setErro("O formato do e-mail é inválido.");
+                    break;
+                case "auth/user-disabled":
+                    setErro("Este usuário foi desabilitado.");
+                    break;
+                case "auth/user-not-found":
+                case "auth/wrong-password":
+                case "auth/invalid-credential":
+                    setErro("Email ou senha inválidos. Tente novamente.");
+                    break;
+                default:
+                    setErro("Erro ao efetuar login. Verifique suas credenciais.");
+                    break;
+            }
+        }
+    };
 
-  return (
-    <div className="d-flex flex-column min-vh-100 bg-light">
-      
+    return (
+        <div className="d-flex flex-column min-vh-100 bg-light">
+            {/* Formulário centralizado */}
+            <div className="container flex-grow-1 d-flex align-items-center justify-content-center">
+                <div className="card shadow-sm border-0 p-4" style={{ maxWidth: "420px", width: "100%" }}>
+                    <div className="text-center mb-4">
+                        <h3 className="fw-bold text-primary">Login</h3>
+                        <p className="text-muted mb-0">Acesse o SisIncidentes</p>
+                    </div>
 
-      {/* Formulário centralizado */}
-      <div className="container flex-grow-1 d-flex align-items-center justify-content-center">
-        <div className="card shadow-sm border-0 p-4" style={{ maxWidth: "420px", width: "100%" }}>
-          <div className="text-center mb-4">
-            <h3 className="fw-bold text-primary">Login</h3>
-            <p className="text-muted mb-0">Acesse o SisIncidentes</p>
-          </div>
+                    <form onSubmit={handleLogin}>
+                        <div className="mb-3">
+                            <label htmlFor="email" className="form-label">
+                                E-mail
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                className="form-control"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
 
-          <form onSubmit={handleLogin}>
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                E-mail
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="form-control"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+                        <div className="mb-3">
+                            <label htmlFor="senha" className="form-label">
+                                Senha
+                            </label>
+                            <input
+                                type="password"
+                                id="senha"
+                                className="form-control"
+                                value={senha}
+                                onChange={(e) => setSenha(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        {erro && (
+                            <div className="alert alert-danger py-2" role="alert">
+                                {erro}
+                            </div>
+                        )}
+
+                        <button type="submit" className="btn btn-primary w-100">
+                            Entrar
+                        </button>
+                    </form>
+
+                    <div className="text-center mt-3">
+                        <small className="text-muted">
+                        Ainda não tem conta? <a href="#">Cadastre-se</a>
+                        </small>
+                    </div>
+                </div>
             </div>
 
-            <div className="mb-3">
-              <label htmlFor="senha" className="form-label">
-                Senha
-              </label>
-              <input
-                type="password"
-                id="senha"
-                className="form-control"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-                required
-              />
-            </div>
-
-            {erro && (
-              <div className="alert alert-danger py-2" role="alert">
-                {erro}
-              </div>
-            )}
-
-            <button type="submit" className="btn btn-primary w-100">
-              Entrar
-            </button>
-          </form>
-
-          <div className="text-center mt-3">
-            <small className="text-muted">
-              Ainda não tem conta? <a href="#">Cadastre-se</a>
-            </small>
-          </div>
+            {/* Rodapé */}
+            <footer className="bg-white text-center text-muted py-3 border-top">
+                <small>© {new Date().getFullYear()} SisIncidentes</small>
+            </footer>
         </div>
-      </div>
-
-      {/* Rodapé */}
-      <footer className="bg-white text-center text-muted py-3 border-top">
-        <small>© {new Date().getFullYear()} SisIncidentes</small>
-      </footer>
-    </div>
-  );
+    );
 };
 
 export default Login;
