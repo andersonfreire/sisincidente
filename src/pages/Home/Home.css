@@ -1,0 +1,31 @@
+
+
+.home-header .logo-ufrn {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+
+.home-header h3 {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .home-header {
+    text-align: center;
+  }
+
+  .home-header .container {
+    flex-direction: column;
+  }
+
+  .home-header .logo-ufrn {
+    margin-bottom: 10px;
+    height: 40px;
+  }
+
+  .home-header h3 {
+    font-size: 1rem;
+  }
+}
