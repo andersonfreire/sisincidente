@@ -5,6 +5,7 @@ import { getCategories } from "../../services/categoryService";
 import { createIncidente, updateIncidente } from "../../services/incidentService";
 import { getUsuarios } from "../../services/usuarioService";
 import { getUnidades } from "../../services/unidadeAdministrativaService";
+import ToastMessage from "../../components/ToastMessage/ToastMessage";
 
 const IncidenteForm = ({ selectedIncidente, setSelectedIncidente, onSave }) => {
     const [formData, setFormData] = useState(initialIncidenteVulnerabilidade);
@@ -12,6 +13,17 @@ const IncidenteForm = ({ selectedIncidente, setSelectedIncidente, onSave }) => {
     const [categorias, setCategorias] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
     const [unidades, setUnidades] = useState([]);
+
+
+    const [toast, setToast] = useState({ show: false, message: "", variant: "success" });
+
+    const showToast = (message, variant = "success") => {
+        setToast({ show: true, message, variant });
+    };
+
+    const hideToast = () => {
+        setToast({ ...toast, show: false });
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -26,6 +38,7 @@ const IncidenteForm = ({ selectedIncidente, setSelectedIncidente, onSave }) => {
                 setUnidades(units);
             } catch (error) {
                 console.error("Erro ao carregar listas:", error);
+                showToast("Erro ao carregar listas de dados.", "danger");
             }
         };
         fetchData();
@@ -50,16 +63,16 @@ const IncidenteForm = ({ selectedIncidente, setSelectedIncidente, onSave }) => {
         try {
             if (selectedIncidente) {
                 await updateIncidente(selectedIncidente.id, formData);
-                alert("Incidente atualizado com sucesso!");
+                showToast("Incidente atualizado com sucesso!");
             } else {
                 const res = await createIncidente(formData);
-                alert(`Incidente criado com sucesso! ID: ${res.id}`);
+                showToast(`Incidente criado com sucesso! ID: ${res.id}`);
             }
             setFormData(initialIncidenteVulnerabilidade);
             setSelectedIncidente(null);
             if (onSave) onSave();
         } catch (error) {
-            alert(`Erro: ${error.message}`);
+            showToast(`Erro: ${error.message}`, "danger");
         } finally {
             setLoading(false);
         }
@@ -342,6 +355,13 @@ const IncidenteForm = ({ selectedIncidente, setSelectedIncidente, onSave }) => {
                     </Button>
                 </div>
             </Form>
+
+            <ToastMessage
+                show={toast.show}
+                onClose={hideToast}
+                message={toast.message}
+                variant={toast.variant}
+            />
         </div>
     );
 };
