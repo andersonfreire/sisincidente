@@ -50,7 +50,7 @@ function App() {
           />
 
           <Route
-            path="/home"
+            path="/"
             element={
               <PrivateRoute>
                 <MainLayout>
@@ -86,17 +86,21 @@ function App() {
           <Route 
             path="/estatisticas"
             element={
+              <PrivateRoute>
                 <MainLayout>
-                    <Estatisticas />
+                  <Estatisticas />
                 </MainLayout>
+              </PrivateRoute>
             }
           />
           <Route
             path="/usuarios"
             element={
+              <PrivateRoute>
                 <MainLayout>
                   <Usuario />
                 </MainLayout>
+              </PrivateRoute>
             }
           />
           <Route 
