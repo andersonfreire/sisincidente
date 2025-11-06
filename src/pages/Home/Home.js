@@ -1,10 +1,32 @@
-import React from "react";
+import React, { use, useEffect, useEffectEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import logoUFRN from "../../assets/logo-UFRN.png";
 import "./Home.css";
+import { useAuth } from "../../context/AuthContext";
+import { getUsuarioById } from "../../services/usuarioService";
 
 const Home = () => {
+
+  const {user} = useAuth()
+  const [usuario, setUsuario] = useState(null)
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        if (user) {
+          const data = await getUsuarioById(user?.uid)
+          setUsuario(data)
+        }
+      } catch (error) {
+        console.error("Erro ao carregar unidades: ", error);
+      }
+      
+    }
+
+    fetchUser()
+  }, [])
+
   return (
     <div className=" min-vh-100 d-flex flex-column">
 
@@ -25,9 +47,21 @@ const Home = () => {
       {/* ===== Conteúdo principal ===== */}
       <main className="flex-grow-1 d-flex align-items-center justify-content-center flex-column">
         <div className="container text-center py-5">
-          <h1 className="display-5 fw-bold text-dark mb-3">
-            Bem-vindo ao <span className="text-primary">SisIncidentes</span> 🚨
+          { user ? (
+            <div> 
+              <h1 className="display-5 fw-bold text-dark mb-3">
+                Olá <span className="text-primary">{usuario?.nome?.split(" ")[0]}</span> !
+              </h1>
+
+              <h2> Seja bem-vindo ao <span className="text-primary">SisIncidentes</span> 🚨</h2>
+            </div>
+            
+          ) : (
+            <h1 className="display-5 fw-bold text-dark mb-3">
+              Bem-vindo ao <span className="text-primary">SisIncidentes</span> 🚨
           </h1>
+          )}
+          
           <p className="lead text-muted mb-4">
             O SisIncidentes é um sistema web desenvolvido para registrar, visualizar e
             gerenciar incidentes de forma simples, eficiente e organizada.

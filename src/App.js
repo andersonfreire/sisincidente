@@ -13,6 +13,7 @@ import Login from "./pages/Login/Login";
 import Incidente from "./pages/Incidente/Indicente";
 import Estatisticas from "./pages/Estatisticas/Estatisticas";
 import Licao from "./pages/Licao/Licao";
+import UserProfile from "./pages/Usuario/UserProfile";
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -115,6 +116,17 @@ function App() {
               <PrivateRoute>
                 <MainLayout>
                   <Licao />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/perfil"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <UserProfile />
                 </MainLayout>
               </PrivateRoute>
             }

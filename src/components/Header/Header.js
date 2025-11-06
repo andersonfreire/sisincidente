@@ -6,6 +6,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import { useAuth } from "../../context/AuthContext";
 import LogoUfrn from "../../assets/logo-UFRN.png";
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
   const { user } = useAuth();
@@ -44,15 +45,18 @@ const Header = () => {
               <span>{user.email}</span>
             </Dropdown.Toggle>
 
-              <Dropdown.Menu className="shadow-sm">
-              <Dropdown.Item href="#/perfil">
-                <FaUserCircle className="me-2 text-primary" /> Perfil
-              </Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item onClick={handleLogout} className="text-danger">
-                <FaSignOutAlt className="me-2" /> Sair
-              </Dropdown.Item>
-            </Dropdown.Menu>
+               <Dropdown.Menu className="shadow-sm">
+                {/* ✅ Agora usa NavLink, não recarrega a página */}
+                <Dropdown.Item as={NavLink} to="/perfil">
+                  <FaUserCircle className="me-2 text-primary" /> Perfil
+                </Dropdown.Item>
+
+                <Dropdown.Divider />
+
+                <Dropdown.Item onClick={handleLogout} className="text-danger">
+                  <FaSignOutAlt className="me-2" /> Sair
+                </Dropdown.Item>
+              </Dropdown.Menu>
           </Dropdown>
         )} 
       </div>

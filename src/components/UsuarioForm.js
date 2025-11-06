@@ -202,7 +202,7 @@ const UsuarioForm = ({ selectedUsuario, setSelectedUsuario, onSave }) => {
                     </Col>
                 </Row>
 
-                {}
+                
                 <Form.Group className="mb-3">
                     <Form.Label>Observações</Form.Label>
                     <Form.Control
