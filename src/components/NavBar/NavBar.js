@@ -68,6 +68,10 @@ const NavBar = () => {
             <FaBug className="me-2" /> {isOpen && "Incidentes e Vulnerabilidades"}
           </Nav.Link>
 
+          <Nav.Link as={Link} to="/relatorios" className="text-light sidebar-item">
+            <FaChartBar className="me-2" /> {isOpen && "Relatórios"}
+          </Nav.Link>
+
           <Nav.Link as={Link} to="/licoes" className="text-light sidebar-item">
             <FaLightbulb className="me-2" /> {isOpen && "Lições"}
           </Nav.Link>

@@ -13,6 +13,7 @@ import Login from "./pages/Login/Login";
 import Incidente from "./pages/Incidente/Indicente";
 import Estatisticas from "./pages/Estatisticas/Estatisticas";
 import Licao from "./pages/Licao/Licao";
+import Relatorios from "./pages/Relatorios/Relatorios";
 import UserProfile from "./pages/Usuario/UserProfile";
 
 const PrivateRoute = ({ children }) => {
@@ -73,6 +74,18 @@ function App() {
               </PrivateRoute>
             }
           />
+          
+          <Route
+            path="/relatorios"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <Relatorios />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+
           <Route
             path="/unidades"
             element={
@@ -83,6 +96,7 @@ function App() {
               </PrivateRoute>
             }
           />
+
           <Route 
             path="/estatisticas"
             element={
@@ -93,6 +107,7 @@ function App() {
               </PrivateRoute>
             }
           />
+
           <Route
             path="/usuarios"
             element={
@@ -103,6 +118,7 @@ function App() {
               </PrivateRoute>
             }
           />
+
           <Route 
             path="/incidentes"
             element={
