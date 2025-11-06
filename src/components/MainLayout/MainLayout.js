@@ -1,12 +1,12 @@
 import React from "react";
 import Header from "../Header/Header";
-import Navbar from "../NavBar/NavBar";
+import NavBar from "../NavBar/NavBar";
 
 const MainLayout = ({ children }) => {
   return (
     <div className="app-layout d-flex">
       {/* Sidebar */}
-      <Navbar />
+      <NavBar />
 
       {/* Área principal */}
       <div className="main-content flex-grow-1">

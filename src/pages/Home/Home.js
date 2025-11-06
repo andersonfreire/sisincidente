@@ -6,10 +6,10 @@ import "./Home.css";
 
 const Home = () => {
   return (
-    <div className="bg-light min-vh-100 d-flex flex-column">
+    <div className=" min-vh-100 d-flex flex-column">
 
       {/* ===== Header ===== */}
-      <header className="home-header py-3 shadow-sm">
+      {/* <header className="home-header py-3 shadow-sm">
         <div className="container d-flex align-items-center justify-content-center flex-wrap">
           <img
             src={logoUFRN}
@@ -20,7 +20,7 @@ const Home = () => {
             Universidade Federal do Rio Grande do Norte
           </h5>
         </div>
-      </header>
+      </header> */}
 
       {/* ===== Conteúdo principal ===== */}
       <main className="flex-grow-1 d-flex align-items-center justify-content-center flex-column">
@@ -76,12 +76,6 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        <div>
-          <Link to="/incidentes" className="btn btn-primary btn-lg shadow-sm">
-            Acessar Sistema
-          </Link>
         </div>
       </main>
 

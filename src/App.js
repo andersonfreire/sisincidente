@@ -51,7 +51,12 @@ function App() {
           <Route
             path="/home"
             element={
-              <Home />
+              <PrivateRoute>
+                <MainLayout>
+                  <Home />
+                </MainLayout>
+              </PrivateRoute>
+              
             }
           />
 
