@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Card, Container } from "react-bootstrap";
 import LicaoForm from "./LicaoForm";
 import LicaoList from "./LicaoList";
+import "./Licao.css";
 
 const Licao = () => {
     const [selectedLesson, setSelectedLesson] = useState(null);
@@ -13,14 +14,13 @@ const Licao = () => {
     };
 
     return (
-        <Container className="m-0 p-0">
-            <Card className="border-0">
-                <Card.Body>                 
+        <Container className="licao-page">
+            <Card className="licao-card border-0">
+                <Card.Body className="licao-card-body">                 
                     <LicaoForm selectedLesson={selectedLesson} onSave={handleSave} />
                     <LicaoList onEdit={setSelectedLesson} refresh={refresh} />
                 </Card.Body>
             </Card>
-            
         </Container>
     );
 };

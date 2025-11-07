@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Container, Card } from "react-bootstrap";
 import UsuarioList from "../../components/UsuarioList";
 import UsuarioForm from "../../components/UsuarioForm";
+import "./Usuario.css";
 
 const Usuario = () => {
     // Controlar a edição (passado entre Form e List)
@@ -18,9 +19,9 @@ const Usuario = () => {
     };
 
     return (
-        <Container className="m-0 p-0">
-            <Card className="border-0">
-                <Card.Body>                 
+        <Container className="usuario-page">
+            <Card className="usuario-card border-0">
+                <Card.Body className="usuario-card-body">                 
                     <UsuarioForm
                         selectedUsuario={selectedUsuario}
                         setSelectedUsuario={setSelectedUsuario}

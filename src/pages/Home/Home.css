@@ -29,3 +29,44 @@
     font-size: 1rem;
   }
 }
+
+/* Regras adicionais para a página Home - responsividade de cards e listas */
+.home-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-cards-row {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.home-card {
+  border-radius: 6px;
+}
+
+.feature-list {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .feature-list {
+    max-width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .home-cards-row {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .home-card {
+    margin-bottom: 0.75rem;
+  }
+}

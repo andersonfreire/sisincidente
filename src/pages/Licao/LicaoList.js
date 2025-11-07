@@ -33,8 +33,6 @@ const LicaoList = ({ onEdit, refresh }) => {
         })
       );
 
-      console.log(licoesComDetalhes)
-
       setLicoes(licoesComDetalhes);
     } catch (error) {
       console.error("Erro ao buscar lições aprendidas:", error);
@@ -78,8 +76,8 @@ const LicaoList = ({ onEdit, refresh }) => {
   }
 
   return (
-    <div className="py-5">
-      <h4 className="mb-3">Lições Registradas</h4>
+    <div className="py-4">
+      <h4 className="mb-3">Lições Aprendidas Registradas</h4>
 
       {licoes.length === 0 ? (
         <p className="text-center text-muted">Nenhuma lição registrada.</p>

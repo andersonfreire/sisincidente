@@ -99,10 +99,10 @@ const LicaoForm = ({ selectedLesson, onSave }) => {
   };
 
   return (
-    <div className="mb-4">
+    <div className="licao-form mb-4">
       <h4>{selectedLesson ? "Editar Lição" : "Nova Lição"}</h4>
 
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} className="licao-form-inner">
         <Form.Group className="mb-3">
           <Form.Label>Título</Form.Label>
           <Form.Control
@@ -173,7 +173,7 @@ const LicaoForm = ({ selectedLesson, onSave }) => {
           />
         </Form.Group>
 
-        <div className="mt-3">
+        <div className="form-actions d-flex">
           <Button type="submit" variant="primary" disabled={loading}>
             {loading
               ? "Salvando..."
