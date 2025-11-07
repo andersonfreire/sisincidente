@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { getAllIncidents, getIncidentsByCategory } from "../../services/relatoriosService";
-import { getCategories } from "../../services/categoryService";
+import { getRelatoriosData } from "../../services/relatoriosService";
 import { Form, Row, Col, Card } from "react-bootstrap";
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import "./Relatorios.css";
 
 const Relatorios = () => {
@@ -16,6 +15,7 @@ const Relatorios = () => {
         completedVulnerabilitiesPercentage: 0,
     });
     const [categoryData, setCategoryData] = useState([]);
+    const [unitData, setUnitData] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,66 +27,15 @@ const Relatorios = () => {
                 endDate = now;
             } else {
                 const year = parseInt(period, 10);
-                startDate = new Date(year, 0, 1);
+                startDate = new Date(.0, 1);
                 endDate = new Date(year, 11, 31);
             }
 
-            const [allIncidents, categories] = await Promise.all([
-                getAllIncidents(),
-                getCategories(),
-            ]);
-
-            const filteredIncidents = allIncidents.filter(i => {
-                if (!i.createdAt) return false;
-                const creationDate = i.createdAt.toDate();
-                return creationDate >= startDate && creationDate <= endDate;
-            });
+            const { stats, categoryData, unitData } = await getRelatoriosData(startDate, endDate);
             
-            const open = filteredIncidents.filter(i => i.situacao === "Aberta");
-            const ongoing = filteredIncidents.filter(i => i.situacao === "Em Andamento");
-            const completed = filteredIncidents.filter(i => i.situacao === "Concluída");
-
-            const openIncidents = open.filter((i) => i.tipo === "Incidente").length;
-            const openVulnerabilities = open.filter((i) => i.tipo === "Vulnerabilidade").length;
-
-            const ongoingIncidents = ongoing.filter((i) => i.tipo === "Incidente").length;
-            const ongoingVulnerabilities = ongoing.filter((i) => i.tipo === "Vulnerabilidade").length;
-            
-            const totalIncidents = openIncidents + ongoingIncidents + completed.filter((i) => i.tipo === "Incidente").length;
-            const totalVulnerabilities = openVulnerabilities + ongoingVulnerabilities + completed.filter((i) => i.tipo === "Vulnerabilidade").length;
-
-            const completedIncidentsPercentage = totalIncidents > 0 ? (completed.filter((i) => i.tipo === "Incidente").length / totalIncidents) * 100 : 0;
-            const completedVulnerabilitiesPercentage = totalVulnerabilities > 0 ? (completed.filter((i) => i.tipo === "Vulnerabilidade").length / totalVulnerabilities) * 100 : 0;
-            
-            setStats({
-                openIncidents,
-                openVulnerabilities,
-                ongoingIncidents,
-                ongoingVulnerabilities,
-                completedIncidentsPercentage,
-                completedVulnerabilitiesPercentage,
-            });
-
-            const categoryCounts = filteredIncidents.reduce((acc, incident) => {
-                const categoryId = incident.categoriaId;
-                if (categoryId) {
-                    if (!acc[categoryId]) {
-                        acc[categoryId] = 0;
-                    }
-                    acc[categoryId]++;
-                }
-                return acc;
-            }, {});
-
-            const newCategoryData = Object.keys(categoryCounts).map(categoryId => {
-                const category = categories.find(c => c.id === categoryId);
-                return {
-                    name: category ? category.nome : "Sem Categoria",
-                    value: categoryCounts[categoryId],
-                };
-            });
-            
-            setCategoryData(newCategoryData);
+            setStats(stats);
+            setCategoryData(categoryData);
+            setUnitData(unitData);
         };
 
         fetchData();
@@ -161,7 +110,7 @@ const Relatorios = () => {
             </Row>
 
             <Row className="mt-4">
-                <Col md={12}>
+                <Col md={6}>
                     <Card>
                         <Card.Body>
                             <Card.Title>Distribuição por Categoria</Card.Title>
@@ -173,7 +122,7 @@ const Relatorios = () => {
                                     labelLine={false}
                                     outerRadius={80}
                                     fill="#8884d8"
-                                    dataKey="value"
+                                    dataKey="Incidentes/Vulnerabilidades"
                                     nameKey="name"
                                     label
                                 >
@@ -184,6 +133,25 @@ const Relatorios = () => {
                                 <Tooltip />
                                 <Legend />
                             </PieChart>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col md={6}>
+                    <Card>
+                        <Card.Body>
+                            <Card.Title>Distribuição por Unidade Administrativa</Card.Title>
+                            <BarChart
+                                width={400}
+                                height={400}
+                                data={unitData}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="Incidentes/Vulnerabilidades" fill="#8884d8" />
+                            </BarChart>
                         </Card.Body>
                     </Card>
                 </Col>
