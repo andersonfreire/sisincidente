@@ -56,21 +56,22 @@ const LicaoList = ({ onEdit, refresh }) => {
     }
 
     return (
-        <div>
+        <div className="licao-list">
             <h4 className="mb-3">Lições Aprendidas Registradas</h4>
 
             {licoes.length === 0 ? (
                 <p className="text-center text-muted">Nenhuma lição registrada.</p>
             ) : (
-                <Table striped bordered hover responsive>
+                <div className="table-responsive">
+                <Table striped bordered hover responsive className="licao-table">
                     <thead>
                         <tr>
-                            <th>Título</th>
-                            <th>Autor</th>
-                            <th>Incidente</th>
-                            <th>Data de Registro</th>
-                            <th>Anexo</th>
-                            <th>Ações</th>
+                            <th className="col-titulo">Título</th>
+                            <th className="col-autor">Autor</th>
+                            <th className="col-incidente">Incidente</th>
+                            <th className="col-data">Data de Registro</th>
+                            <th className="col-anexo">Anexo</th>
+                            <th className="col-acoes">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -94,6 +95,7 @@ const LicaoList = ({ onEdit, refresh }) => {
                                     )}
                                 </td>
                                 <td>
+                                    <div className="licao-actions-buttons">
                                     <Button
                                         variant="warning"
                                         size="sm"
@@ -109,11 +111,13 @@ const LicaoList = ({ onEdit, refresh }) => {
                                     >
                                         Excluir
                                     </Button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
                 </tbody>
                 </Table>
+                </div>
             )}
 
             {/* Modal de confirmação */}

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import CategoriaList from "./CategoriaList";
 import CategoriaForm from "./CategoriaForm";
+import "./Categoria.css";
 
 const Categoria = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -14,9 +15,9 @@ const Categoria = () => {
     };
 
     return (
-        <Container className="m-0 p-0">
-            <Card className="border-0">
-                <Card.Body>                 
+        <Container fluid className="categoria-page">
+            <Card className="categoria-card border-0 shadow-sm">
+                <Card.Body className="categoria-card-body">                 
                     <CategoriaForm
                         selectedCategory={selectedCategory}
                         setSelectedCategory={setSelectedCategory}

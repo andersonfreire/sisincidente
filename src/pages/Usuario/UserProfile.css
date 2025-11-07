@@ -19,3 +19,22 @@
     height: 90px;
   }
 }
+
+/* Ajustes para ações do formulário em mobile */
+.form-actions {
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 576px) {
+  .form-actions {
+    display: flex !important; /* garante que a classe funcione mesmo com Bootstrap utilities */
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}

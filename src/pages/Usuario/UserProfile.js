@@ -132,7 +132,7 @@ const UserProfile = () => {
             />
           </Form.Group>
 
-          <div className="d-flex justify-content-end">
+          <div className="form-actions d-flex justify-content-end">
             <Button variant="primary" type="submit" disabled={saving}>
               {saving ? "Salvando..." : "Salvar Alterações"}
             </Button>

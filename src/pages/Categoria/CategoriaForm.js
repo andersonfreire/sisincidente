@@ -59,10 +59,10 @@ const CategoriaForm = ({ selectedCategory, setSelectedCategory, onSave }) => {
     };
 
     return (
-        <div className="mb-4">
-            <h4>{selectedCategory ? "Editar Categoria" : "Nova Categoria"}</h4>
+        <div className="categoria-form mb-4">
+            <h4 className="mb-4">{selectedCategory ? "Editar Categoria" : "Nova Categoria"}</h4>
         
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} className="categoria-form-inner">
                 <Form.Group className="mb-3">
                     <Form.Label>Nome</Form.Label>
                     <Form.Control
@@ -112,12 +112,14 @@ const CategoriaForm = ({ selectedCategory, setSelectedCategory, onSave }) => {
                     </div>
                 </Form.Group>
 
-                <Button type="submit" variant="primary" disabled={loading}>
-                    {selectedCategory ? "Atualizar" : "Adicionar"}
-                </Button>
-                <Button variant="danger" className="m-2" onClick={handleCancel}>
-                    Cancelar
-                </Button>
+                <div className="d-flex flex-wrap gap-2">
+                    <Button type="submit" variant="primary" disabled={loading}>
+                        {selectedCategory ? "Atualizar" : "Adicionar"}
+                    </Button>
+                    <Button variant="danger" onClick={handleCancel}>
+                        Cancelar
+                    </Button>
+                </div>
             </Form>
         </div>
     );

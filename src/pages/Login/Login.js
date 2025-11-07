@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./Login.css";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 
@@ -38,11 +39,11 @@ const Login = () => {
     };
 
     return (
-        <div className="d-flex flex-column min-vh-100 bg-light">
+        <div className="d-flex flex-column login-page">
             {/* Formulário centralizado */}
-            <div className="container flex-grow-1 d-flex align-items-center justify-content-center">
-                <div className="card shadow-sm border-0 p-4" style={{ maxWidth: "420px", width: "100%" }}>
-                    <div className="text-center mb-4">
+            <div className="login-container">
+                <div className="card login-card shadow-sm border-0 p-4">
+                    <div className="text-center mb-4 login-title">
                         <h3 className="fw-bold text-primary">Login</h3>
                         <p className="text-muted mb-0">Acesse o SisIncidentes</p>
                     </div>
@@ -96,7 +97,7 @@ const Login = () => {
             </div>
 
             {/* Rodapé */}
-            <footer className="bg-white text-center text-muted py-3 border-top">
+            <footer className="login-footer">
                 <small>© {new Date().getFullYear()} SisIncidentes</small>
             </footer>
         </div>

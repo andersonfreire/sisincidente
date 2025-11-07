@@ -31,15 +31,15 @@ const CategoriaList = ({ onEdit }) => {
     }, []);
 
     return (
-        <div>
+        <div className="categoria-list table-responsive">
             <h4 className="mb-3">Categorias</h4>
-            <Table striped bordered hover responsive>
+            <Table striped bordered hover className="categoria-table">
                 <thead>
                     <tr>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th>Tipo</th>
-                        <th>Ações</th>
+                        <th className="col-nome">Nome</th>
+                        <th className="col-descricao">Descrição</th>
+                        <th className="col-tipo">Tipo</th>
+                        <th className="col-acoes">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,21 +50,23 @@ const CategoriaList = ({ onEdit }) => {
                                 <td>{cat.descricao || "-"}</td>
                                 <td>{cat.tipo}</td>
                                 <td>
-                                    <Button
-                                        variant="warning"
-                                        size="sm"
-                                        className="me-2"
-                                        onClick={() => onEdit(cat)}
-                                    >
-                                        Editar
-                                    </Button>
-                                    <Button
-                                        variant="danger"
-                                        size="sm"
-                                        onClick={() => handleDelete(cat.id)}
-                                    >
-                                        Excluir
-                                    </Button>
+                                    <div className="categoria-actions-buttons">
+                                        <Button
+                                            variant="warning"
+                                            size="sm"
+                                            className="me-2"
+                                            onClick={() => onEdit(cat)}
+                                        >
+                                            Editar
+                                        </Button>
+                                        <Button
+                                            variant="danger"
+                                            size="sm"
+                                            onClick={() => handleDelete(cat.id)}
+                                        >
+                                            Excluir
+                                        </Button>
+                                    </div>
                                 </td>
                             </tr>
                         ))

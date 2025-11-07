@@ -1,4 +1,4 @@
-import React, { use, useEffect, useEffectEvent, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import logoUFRN from "../../assets/logo-UFRN.png";
@@ -28,7 +28,7 @@ const Home = () => {
   }, [])
 
   return (
-    <div className=" min-vh-100 d-flex flex-column">
+    <div className="min-vh-100 d-flex flex-column">
 
       {/* ===== Header ===== */}
       {/* <header className="home-header py-3 shadow-sm">
@@ -45,7 +45,7 @@ const Home = () => {
       </header> */}
 
       {/* ===== Conteúdo principal ===== */}
-      <main className="flex-grow-1 d-flex align-items-center justify-content-center flex-column">
+      <main className="flex-grow-1 d-flex align-items-center justify-content-center flex-column home-main">
         <div className="container text-center py-5">
           { user ? (
             <div> 
@@ -68,7 +68,7 @@ const Home = () => {
           </p>
         </div>
 
-        <div className="row justify-content-center mb-4 w-100 px-3">
+        <div className="row justify-content-center mb-4 w-100 px-3 home-cards-row">
           {/* Bloco 1 - Recursos */}
           <div className="col-md-4 mb-3">
             <div className="card border-0 shadow-sm">
@@ -77,8 +77,7 @@ const Home = () => {
                   Principais Recursos
                 </h5>
                 <ul
-                  className="list-unstyled text-start mx-auto"
-                  style={{ maxWidth: "500px" }}
+                  className="list-unstyled text-start mx-auto feature-list"
                 >
                   <li>📋 Cadastro, edição e exclusão de incidentes</li>
                   <li>🗂️ Gerenciamento completo de categorias</li>
@@ -98,8 +97,7 @@ const Home = () => {
                   Tecnologias Utilizadas
                 </h5>
                 <ul
-                  className="list-unstyled text-start mx-auto"
-                  style={{ maxWidth: "500px" }}
+                  className="list-unstyled text-start mx-auto feature-list"
                 >
                   <li>⚛️ <strong>React.js</strong> — construção da interface e componentes dinâmicos.</li>
                   <li>🧭 <strong>React Router DOM</strong> — controle de rotas e navegação.</li>
