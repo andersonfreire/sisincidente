@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Card, Accordion } from "react-bootstrap";
-import IncidenteList from "./IncidenteList";
 import IncidenteForm from "./IncidenteForm";
+import IncidenteList from "./IncidentList";
 
 const Incidente = () => {
     const [selectedIncidente, setSelectedIncidente] = useState(null);
@@ -25,8 +25,8 @@ const Incidente = () => {
                             }}>
                             <Accordion.Header>
                                 {selectedIncidente
-                                ? `✏️ Editar Incidente #${selectedIncidente.numeroChamado || ""}`
-                                : "➕ Novo Incidente"}
+                                ? `✏️ Editar Incidente/Vulnerabilidade #${selectedIncidente.numeroChamado || ""}`
+                                : "➕ Novo(a) Incidente/Vulnerabilidade"}
                             </Accordion.Header>
                             <Accordion.Body>
                                 <IncidenteForm
@@ -44,7 +44,7 @@ const Incidente = () => {
                                 boxShadow: "none"
                             }}
                         >
-                            <Accordion.Header>📋 Incidentes Registrados</Accordion.Header>
+                            <Accordion.Header>📋 Incidentes/Vulnerabilidades Registrado(a)s</Accordion.Header>
                             <Accordion.Body>
                                 <IncidenteList
                                     key={refresh}

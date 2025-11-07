@@ -84,8 +84,8 @@ const IncidenteForm = ({ selectedIncidente, setSelectedIncidente, onSave }) => {
     };
 
     return (
-        <div className="mb-4">
-            <h4>{selectedIncidente ? "Editar Incidente" : "Novo Incidente"}</h4>
+        <div className="mb-4 py-3">
+            <h4 className="mb-4">{selectedIncidente ? "Editar Incidente/Vulnerabildiade" : "Registrar Incidente/Vulnerabilidade"}</h4>
             <Form onSubmit={handleSubmit}>
                 {/* === Identificação básica === */}
 

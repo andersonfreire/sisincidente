@@ -2,19 +2,31 @@ import React, { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import { createCategory, updateCategory } from "../../services/categoryService";
 import { initialCategoriaModel } from "../../models/categoriaModel";
+import ToastMessage from "../../components/ToastMessage/ToastMessage";
 
 const CategoriaForm = ({ selectedCategory, setSelectedCategory, onSave }) => {
-
     const [categoriaData, setCategoriaData] = useState(initialCategoriaModel);
     const [loading, setLoading] = useState(false);
 
+    // Estado do Toast
+    const [toast, setToast] = useState({ show: false, message: "", variant: "success" });
+
+    const showToast = (message, variant = "success") => {
+        setToast({ show: true, message, variant });
+    };
+
+    const hideToast = () => {
+        setToast({ ...toast, show: false });
+    };
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setCategoriaData(prevData => ({
+        setCategoriaData((prevData) => ({
             ...prevData,
-            [name]: type === 'number'
+            [name]:
+                type === "number"
                     ? parseFloat(value) || 0
-                    : type === 'checkbox'
+                    : type === "checkbox"
                     ? checked
                     : value,
         }));
@@ -35,19 +47,18 @@ const CategoriaForm = ({ selectedCategory, setSelectedCategory, onSave }) => {
         try {
             if (selectedCategory) {
                 await updateCategory(selectedCategory.id, categoriaData);
-                alert("Categoria atualizada com sucesso!");
+                showToast("Categoria atualizada com sucesso!");
             } else {
                 const res = await createCategory(categoriaData);
-                alert(`Categoria criada com sucesso! ID: ${res.id}`);
+                showToast(`Categoria criada com sucesso! ID: ${res.id}`);
             }
 
             setCategoriaData(initialCategoriaModel);
             setSelectedCategory(null);
 
             if (onSave) onSave();
-
         } catch (error) {
-            alert(`Erro: ${error.message}`);
+            showToast(`Erro: ${error.message}`, "danger");
         } finally {
             setLoading(false);
         }
@@ -59,9 +70,9 @@ const CategoriaForm = ({ selectedCategory, setSelectedCategory, onSave }) => {
     };
 
     return (
-        <div className="mb-4">
-            <h4>{selectedCategory ? "Editar Categoria" : "Nova Categoria"}</h4>
-        
+        <div className="mb-4 py-3">
+            <h4 className="mb-3">{selectedCategory ? "Editar Categoria" : "Nova Categoria"}</h4>
+
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                     <Form.Label>Nome</Form.Label>
@@ -79,7 +90,7 @@ const CategoriaForm = ({ selectedCategory, setSelectedCategory, onSave }) => {
                     <Form.Label>Descrição</Form.Label>
                     <Form.Control
                         as="textarea"
-                        rows={4} 
+                        rows={4}
                         name="descricao"
                         placeholder="Digite a descrição da categoria"
                         value={categoriaData.descricao}
@@ -112,13 +123,23 @@ const CategoriaForm = ({ selectedCategory, setSelectedCategory, onSave }) => {
                     </div>
                 </Form.Group>
 
-                <Button type="submit" variant="primary" disabled={loading}>
-                    {selectedCategory ? "Atualizar" : "Adicionar"}
-                </Button>
-                <Button variant="danger" className="m-2" onClick={handleCancel}>
-                    Cancelar
-                </Button>
+                <div className="mt-3">
+                    <Button type="submit" variant="primary" disabled={loading}>
+                        {selectedCategory ? "Atualizar" : "Adicionar"}
+                    </Button>
+                    <Button variant="secondary" className="ms-2" onClick={handleCancel}>
+                        Cancelar
+                    </Button>
+                </div>
             </Form>
+
+            {/* Componente de toast global */}
+            <ToastMessage
+                show={toast.show}
+                onClose={hideToast}
+                message={toast.message}
+                variant={toast.variant}
+            />
         </div>
     );
 };
