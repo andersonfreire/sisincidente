@@ -19,7 +19,7 @@ const Usuario = () => {
     };
 
     return (
-        <Container className="usuario-page">
+        <Container className="usuario-page m-0">
             <Card className="usuario-card border-0">
                 <Card.Body className="usuario-card-body">                 
                     <UsuarioForm

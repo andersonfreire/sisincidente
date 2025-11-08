@@ -14,7 +14,7 @@ const Licao = () => {
     };
 
     return (
-        <Container className="licao-page">
+        <Container className="m-0 licao-page">
             <Card className="licao-card border-0">
                 <Card.Body className="licao-card-body">                 
                     <LicaoForm selectedLesson={selectedLesson} onSave={handleSave} />

@@ -15,8 +15,8 @@ const Categoria = () => {
     };
 
     return (
-        <Container fluid className="categoria-page">
-            <Card className="categoria-card border-0 shadow-sm">
+        <Container className="categoria-page m-0">
+            <Card className="categoria-card border-0">
                 <Card.Body className="categoria-card-body">                 
                     <CategoriaForm
                         selectedCategory={selectedCategory}

@@ -64,6 +64,7 @@
   .home-cards-row {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+    flex-wrap: wrap;
   }
 
   .home-card {
