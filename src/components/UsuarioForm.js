@@ -3,50 +3,57 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Row, Col } from "react-bootstrap";
 import { createUsuario, updateUsuario } from "../services/usuarioService";
-import { getUnidades } from "../services/unidadeAdministrativaService"; // Roteiro: Dependência do CRUD anterior
-import { initialUsuario } from "../models/usuarioModel"; //
+import { getUnidades } from "../services/unidadeAdministrativaService";
+import { initialUsuario } from "../models/usuarioModel";
+import ToastMessage from "./ToastMessage/ToastMessage";
 
 // Lista de opções de Função
 const funcoes = [
-    "Analista de TI", 
-    "Coordenador de SI", 
-    "Gestor de TI", 
-    "Superintendente de TI", 
-    "Técnico de TI"
+    "Analista de TI",
+    "Coordenador de SI",
+    "Gestor de TI",
+    "Superintendente de TI",
+    "Técnico de TI",
 ];
 
 const UsuarioForm = ({ selectedUsuario, setSelectedUsuario, onSave }) => {
-
     const [usuarioData, setUsuarioData] = useState(initialUsuario);
-    const [unidades, setUnidades] = useState([]); // Estado para o Scrollbar de Unidades
+    const [unidades, setUnidades] = useState([]);
     const [loading, setLoading] = useState(false);
-    
-    // Define se estamos em modo "Atualizar"
+
+    // ✅ Estado do Toast
+    const [toast, setToast] = useState({
+        show: false,
+        message: "",
+        type: "success", // success | error | warning | info
+    });
+
     const isEditMode = !!selectedUsuario;
 
-    // Handler genérico para todos os inputs
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUsuarioData(prevData => ({
+        setUsuarioData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
     };
 
-    // Carregar as unidades administrativas no dropdown
     useEffect(() => {
         (async () => {
             try {
-                // Busca unidades para o Scrollbar (Select)
                 const unidadesList = await getUnidades();
                 setUnidades(unidadesList);
             } catch (error) {
                 console.error("Erro ao carregar unidades: ", error);
+                setToast({
+                    show: true,
+                    message: "Erro ao carregar unidades administrativas.",
+                    type: "error",
+                });
             }
         })();
-    }, []); // Roda apenas uma vez
+    }, []);
 
-    // Preencher o formulário ao editar
     useEffect(() => {
         if (selectedUsuario) {
             setUsuarioData(selectedUsuario);
@@ -61,20 +68,29 @@ const UsuarioForm = ({ selectedUsuario, setSelectedUsuario, onSave }) => {
 
         try {
             if (isEditMode) {
-                // Lógica para atualizar
                 await updateUsuario(selectedUsuario.id, usuarioData);
-                alert("Usuário atualizado com sucesso!");
+                setToast({
+                    show: true,
+                    message: "Usuário atualizado com sucesso!",
+                    type: "success",
+                });
             } else {
-                // Lógica para cadastrar 
                 await createUsuario(usuarioData);
-                alert(`Usuário criado com sucesso!`);
+                setToast({
+                    show: true,
+                    message: "Usuário criado com sucesso!",
+                    type: "success",
+                });
             }
 
             handleCancel();
             if (onSave) onSave();
-
         } catch (error) {
-            alert(`Erro: ${error.message}`);
+            setToast({
+                show: true,
+                message: `Erro: ${error.message || "Não foi possível salvar o usuário."}`,
+                type: "error",
+            });
         } finally {
             setLoading(false);
         }
@@ -88,9 +104,9 @@ const UsuarioForm = ({ selectedUsuario, setSelectedUsuario, onSave }) => {
     return (
         <div className="mb-4">
             <h4>{isEditMode ? "Editar Usuário" : "Novo Usuário"}</h4>
+
             <Form onSubmit={handleSubmit}>
                 <Row>
-                    {}
                     <Col md={isEditMode ? 12 : 8}>
                         <Form.Group className="mb-3">
                             <Form.Label>E-mail</Form.Label>
@@ -101,11 +117,11 @@ const UsuarioForm = ({ selectedUsuario, setSelectedUsuario, onSave }) => {
                                 value={usuarioData.email}
                                 onChange={handleChange}
                                 required
-                                disabled={isEditMode} // Roteiro: Desabilita e-mail na edição
+                                disabled={isEditMode}
                             />
                         </Form.Group>
                     </Col>
-                    {}
+
                     {!isEditMode && (
                         <Col md={4}>
                             <Form.Group className="mb-3">
@@ -116,15 +132,14 @@ const UsuarioForm = ({ selectedUsuario, setSelectedUsuario, onSave }) => {
                                     placeholder="Senha de acesso"
                                     value={usuarioData.senha}
                                     onChange={handleChange}
-                                    required={!isEditMode} // Obrigatório apenas no cadastro
+                                    required
                                 />
                             </Form.Group>
                         </Col>
                     )}
                 </Row>
-                
+
                 <Row>
-                    {}
                     <Col md={8}>
                         <Form.Group className="mb-3">
                             <Form.Label>Nome Completo</Form.Label>
@@ -138,7 +153,6 @@ const UsuarioForm = ({ selectedUsuario, setSelectedUsuario, onSave }) => {
                             />
                         </Form.Group>
                     </Col>
-                    {}
                     <Col md={4}>
                         <Form.Group className="mb-3">
                             <Form.Label>Matrícula</Form.Label>
@@ -154,7 +168,6 @@ const UsuarioForm = ({ selectedUsuario, setSelectedUsuario, onSave }) => {
                 </Row>
 
                 <Row>
-                    {}
                     <Col md={5}>
                         <Form.Group className="mb-3">
                             <Form.Label>Unidade Administrativa</Form.Label>
@@ -165,13 +178,15 @@ const UsuarioForm = ({ selectedUsuario, setSelectedUsuario, onSave }) => {
                                 required
                             >
                                 <option value="">-- Selecione uma unidade --</option>
-                                {unidades.map(u => (
-                                    <option key={u.id} value={u.id}>{u.titulo} ({u.sigla})</option>
+                                {unidades.map((u) => (
+                                    <option key={u.id} value={u.id}>
+                                        {u.titulo} ({u.sigla})
+                                    </option>
                                 ))}
                             </Form.Select>
                         </Form.Group>
                     </Col>
-                    {}
+
                     <Col md={4}>
                         <Form.Group className="mb-3">
                             <Form.Label>Função</Form.Label>
@@ -181,13 +196,16 @@ const UsuarioForm = ({ selectedUsuario, setSelectedUsuario, onSave }) => {
                                 onChange={handleChange}
                                 required
                             >
-                                {funcoes.map(f => (
-                                    <option key={f} value={f}>{f}</option>
+                                <option value="">-- Selecione uma função --</option>
+                                {funcoes.map((f) => (
+                                    <option key={f} value={f}>
+                                        {f}
+                                    </option>
                                 ))}
                             </Form.Select>
                         </Form.Group>
                     </Col>
-                    {}
+
                     <Col md={3}>
                         <Form.Group className="mb-3">
                             <Form.Label>Telefone</Form.Label>
@@ -202,12 +220,11 @@ const UsuarioForm = ({ selectedUsuario, setSelectedUsuario, onSave }) => {
                     </Col>
                 </Row>
 
-                
                 <Form.Group className="mb-3">
                     <Form.Label>Observações</Form.Label>
                     <Form.Control
                         as="textarea"
-                        rows={3} 
+                        rows={3}
                         name="observacoes"
                         placeholder="Anotações adicionais"
                         value={usuarioData.observacoes}
@@ -222,6 +239,14 @@ const UsuarioForm = ({ selectedUsuario, setSelectedUsuario, onSave }) => {
                     Cancelar
                 </Button>
             </Form>
+
+            {/* ✅ Componente de Toast */}
+            <ToastMessage
+                show={toast.show}
+                message={toast.message}
+                type={toast.type}
+                onClose={() => setToast({ ...toast, show: false })}
+            />
         </div>
     );
 };

@@ -3,23 +3,30 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Row, Col } from "react-bootstrap";
 import { createUnidade, updateUnidade } from "../services/unidadeAdministrativaService";
-import { initialUnidadeAdministrativa } from "../models/unidadeAdministrativaModel"; //
+import { initialUnidadeAdministrativa } from "../models/unidadeAdministrativaModel";
+import ToastMessage from "./ToastMessage/ToastMessage";
 
 const UnidadeAdministrativaForm = ({ selectedUnidade, setSelectedUnidade, onSave }) => {
-
     const [unidadeData, setUnidadeData] = useState(initialUnidadeAdministrativa);
     const [loading, setLoading] = useState(false);
 
-    // Handler genérico para todos os inputs
+    // ✅ Estado do Toast
+    const [toast, setToast] = useState({
+        show: false,
+        message: "",
+        type: "success", // success | error | info
+    });
+
+    // Handler genérico
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUnidadeData(prevData => ({
+        setUnidadeData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
     };
 
-    // Monitora a seleção para preencher o formulário para "Atualizar"
+    // Monitora a seleção (modo edição)
     useEffect(() => {
         if (selectedUnidade) {
             setUnidadeData(selectedUnidade);
@@ -28,33 +35,43 @@ const UnidadeAdministrativaForm = ({ selectedUnidade, setSelectedUnidade, onSave
         }
     }, [selectedUnidade]);
 
+    // Submissão do formulário
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
         try {
             if (selectedUnidade) {
-                // Atualizar
                 await updateUnidade(selectedUnidade.id, unidadeData);
-                alert("Unidade atualizada com sucesso!");
+                setToast({
+                    show: true,
+                    message: "Unidade atualizada com sucesso!",
+                    type: "success",
+                });
             } else {
-                // Cadastrar
                 const res = await createUnidade(unidadeData);
-                alert(`Unidade criada com sucesso! ID: ${res.id}`);
+                setToast({
+                    show: true,
+                    message: `Unidade criada com sucesso! ID: ${res.id}`,
+                    type: "success",
+                });
             }
 
-            // Limpa o formulário
             handleCancel();
             if (onSave) onSave();
-
         } catch (error) {
-            alert(`Erro: ${error.message}`);
+            console.error("Erro ao salvar unidade:", error);
+            setToast({
+                show: true,
+                message: `Erro ao salvar unidade: ${error.message || "Tente novamente."}`,
+                type: "error",
+            });
         } finally {
             setLoading(false);
         }
     };
 
-    // Limpa o formulário e a seleção
+    // Reset do formulário
     const handleCancel = () => {
         setUnidadeData(initialUnidadeAdministrativa);
         setSelectedUnidade(null);
@@ -65,7 +82,6 @@ const UnidadeAdministrativaForm = ({ selectedUnidade, setSelectedUnidade, onSave
             <h4>{selectedUnidade ? "Editar Unidade" : "Nova Unidade Administrativa"}</h4>
             <Form onSubmit={handleSubmit}>
                 <Row>
-                    {}
                     <Col md={4}>
                         <Form.Group className="mb-3">
                             <Form.Label>Código</Form.Label>
@@ -79,7 +95,6 @@ const UnidadeAdministrativaForm = ({ selectedUnidade, setSelectedUnidade, onSave
                             />
                         </Form.Group>
                     </Col>
-                    {}
                     <Col md={8}>
                         <Form.Group className="mb-3">
                             <Form.Label>Sigla</Form.Label>
@@ -94,8 +109,7 @@ const UnidadeAdministrativaForm = ({ selectedUnidade, setSelectedUnidade, onSave
                         </Form.Group>
                     </Col>
                 </Row>
-                
-                {}
+
                 <Form.Group className="mb-3">
                     <Form.Label>Título (Nome Completo)</Form.Label>
                     <Form.Control
@@ -108,7 +122,6 @@ const UnidadeAdministrativaForm = ({ selectedUnidade, setSelectedUnidade, onSave
                     />
                 </Form.Group>
 
-                {}
                 <Form.Group className="mb-3">
                     <Form.Label>Responsável</Form.Label>
                     <Form.Control
@@ -120,12 +133,11 @@ const UnidadeAdministrativaForm = ({ selectedUnidade, setSelectedUnidade, onSave
                     />
                 </Form.Group>
 
-                {}
                 <Form.Group className="mb-3">
                     <Form.Label>Contato</Form.Label>
                     <Form.Control
                         as="textarea"
-                        rows={3} 
+                        rows={3}
                         name="contato"
                         placeholder="Telefone, e-mail ou ramal"
                         value={unidadeData.contato}
@@ -140,6 +152,14 @@ const UnidadeAdministrativaForm = ({ selectedUnidade, setSelectedUnidade, onSave
                     Cancelar
                 </Button>
             </Form>
+
+            {/* ✅ Toast de mensagens */}
+            <ToastMessage
+                show={toast.show}
+                message={toast.message}
+                type={toast.type}
+                onClose={() => setToast({ ...toast, show: false })}
+            />
         </div>
     );
 };
